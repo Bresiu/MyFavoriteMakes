@@ -52,7 +52,7 @@ class SyncWorker @AssistedInject constructor(
                 inputStream.parseResults()?.let { jsonObjects ->
                     jsonObjects.mapToModels().saveLocally()
                     simulateNetworkDelay()
-                    Result.failure()
+                    Result.success()
                 } ?: run {
                     Log.e(TAG, "Sync error - cannot parse json")
                     Result.failure()

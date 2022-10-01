@@ -27,10 +27,12 @@ fun NavHost(
             val viewModel: FavoriteMakesViewModel = hiltViewModel()
             FavoriteMakesScreen(
                 viewModel = viewModel,
-            )
+            ) {
+                navController.navigate(MakesList.route)
+            }
         }
         composable(
-            route = FavoriteMakesDetails.route,
+            route = MakesList.route,
         ) {
             val viewModel: MakesListViewModel = hiltViewModel()
             MakesListScreen(
@@ -48,6 +50,6 @@ object FavoriteMakes : Destination {
     override val route = "favorite_makes"
 }
 
-object FavoriteMakesDetails : Destination {
+object MakesList : Destination {
     override val route = "makes_list"
 }

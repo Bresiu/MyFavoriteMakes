@@ -9,14 +9,19 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 val Green500 = Color(0xFF1EB980)
 val Dark = Color(0xFF5E625E)
 val Error = Color(0xFFBA3A1E)
+val Bright = Color(0xFFEAF4EB)
 
-private val DarkColorScheme = lightColorScheme(
+private val ColorScheme = lightColorScheme(
     primary = Green500,
-    surface = Color(0xFFEAF4EB),
+    onPrimary = Bright,
+    secondary = Bright,
+    surface = Bright,
     onSurface = Green500,
-    background = Color(0xFFEAF4EB),
+    background = Bright,
     onBackground = Dark,
-    error = Error
+    tertiary = Dark,
+    error = Error,
+    onError = Bright,
 )
 
 @Composable
@@ -25,7 +30,7 @@ fun FavoriteMakesTheme(
 ) {
     rememberSystemUiController().setSystemBarsColor(color = Color.Transparent, darkIcons = true)
     MaterialTheme(
-        colorScheme = DarkColorScheme,
+        colorScheme = ColorScheme,
         typography = Typography,
         content = content
     )

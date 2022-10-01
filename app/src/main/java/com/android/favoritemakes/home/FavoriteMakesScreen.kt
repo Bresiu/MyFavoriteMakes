@@ -1,11 +1,10 @@
 package com.android.favoritemakes.home
 
-import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
@@ -23,17 +22,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.favoritemakes.R
 import com.android.favoritemakes.data.source.remote.SyncStatus
-import com.android.favoritemakes.ui.animations.INDICATOR_SIZE
 import com.android.favoritemakes.ui.animations.LoadingIndicator
 import com.android.favoritemakes.ui.theme.FavoriteMakesTheme
 import kotlinx.coroutines.delay
 
 private const val NUDGE_DELAY = 300L
+private const val ANIMATION_DELAY = 300
 
 @Composable
 fun FavoriteMakesScreen(
     modifier: Modifier = Modifier,
     viewModel: FavoriteMakesViewModel = viewModel(),
+    navigateToMakesList: () -> Unit
 ) {
     var isNudgeVisible by rememberSaveable { mutableStateOf(false) }
     val favoriteMakesCount by remember { viewModel.favoriteMakes }
@@ -45,63 +45,99 @@ fun FavoriteMakesScreen(
         }
     )
     val syncStatus by remember { viewModel.syncStatus }
-    val onNudgeClick: () -> Unit = { Log.d("BRS", "on nudge click") }
     LaunchedEffect(isNudgeVisible) {
         delay(NUDGE_DELAY)
         isNudgeVisible = true
     }
     Surface(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.padding(vertical = 32.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Row(
-                modifier = Modifier.height(INDICATOR_SIZE.dp)
+        Box(contentAlignment = Alignment.TopCenter) {
+            Column(
+                modifier = Modifier.padding(vertical = 32.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                LoadingIndicator(
-                    indicatorHeight = INDICATOR_SIZE,
-                    isVisible = syncStatus == SyncStatus.RUNNING || syncStatus == SyncStatus.FAILED,
-                    color = if (syncStatus == SyncStatus.RUNNING) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.error
-                    }
-                )
-            }
-            Text(
-                modifier = Modifier.padding(vertical = 2.dp),
-                textAlign = TextAlign.Center,
-                text = stringResource(R.string.favorite_makes_title),
-                style = typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Box {
-                Icon(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f),
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_favorite),
-                    contentDescription = stringResource(R.string.heart_icon_content_description),
-                    tint = MaterialTheme.colorScheme.primary
-                )
                 Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = favoriteMakesCount.toString(),
-                    color = Color.White,
-                    fontSize = 120.sp
+                    modifier = Modifier.padding(vertical = 2.dp),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(R.string.favorite_makes_title),
+                    style = typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Box {
+                    Icon(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_favorite),
+                        contentDescription = stringResource(R.string.heart_icon_content_description),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = favoriteMakesCount.toString(),
+                        color = Color.White,
+                        fontSize = 120.sp
+                    )
+                }
+                AnimatedNudge(
+                    isVisible = isNudgeVisible,
+                    text = nudgeText,
+                    onClick = navigateToMakesList,
                 )
             }
-            AnimatedNudge(
-                isVisible = isNudgeVisible,
-                text = nudgeText,
-                onClick = onNudgeClick,
+            AnimatedSyncState(
+                isVisible = syncStatus == SyncStatus.RUNNING || syncStatus == SyncStatus.FAILED,
+                isProgressVisible = syncStatus == SyncStatus.RUNNING,
+                backgroundColor = when (syncStatus) {
+                    SyncStatus.RUNNING -> MaterialTheme.colorScheme.primary
+                    SyncStatus.FAILED -> MaterialTheme.colorScheme.error
+                    else -> MaterialTheme.colorScheme.tertiary
+                },
+                text = when (syncStatus) {
+                    SyncStatus.RUNNING -> stringResource(R.string.sync_status_syncing)
+                    SyncStatus.FAILED -> stringResource(R.string.sync_status_error)
+                    else -> ""
+                },
             )
         }
     }
 }
 
-private const val animationDuration = 300
+@Composable
+fun AnimatedSyncState(
+    modifier: Modifier = Modifier,
+    isVisible: Boolean,
+    isProgressVisible: Boolean,
+    backgroundColor: Color,
+    text: String,
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = slideInVertically(
+            animationSpec = tween(durationMillis = ANIMATION_DELAY)
+        ) { fullHeight -> -fullHeight / 3 } + fadeIn(
+            animationSpec = tween(durationMillis = ANIMATION_DELAY)
+        ),
+        exit = slideOutVertically() + fadeOut()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
+                .animateContentSize(),
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier.padding(20.dp, 10.dp),
+            )
+            LoadingIndicator(
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 10.dp),
+                isVisible = isProgressVisible,
+            )
+        }
+    }
+}
 
 @Composable
 fun AnimatedNudge(
@@ -112,9 +148,9 @@ fun AnimatedNudge(
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInHorizontally(
-            animationSpec = tween(durationMillis = animationDuration)
+            animationSpec = tween(durationMillis = ANIMATION_DELAY)
         ) { fullWidth -> -fullWidth / 3 } + fadeIn(
-            animationSpec = tween(durationMillis = animationDuration)
+            animationSpec = tween(durationMillis = ANIMATION_DELAY)
         ),
     ) {
         Button(
@@ -143,7 +179,6 @@ fun AnimatedNudge(
 @Composable
 fun ComposablePreview() {
     FavoriteMakesTheme {
-        FavoriteMakesScreen()
+        FavoriteMakesScreen {}
     }
 }
-

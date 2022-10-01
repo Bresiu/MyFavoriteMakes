@@ -56,10 +56,7 @@ fun LoadingIndicator(
                         .padding(horizontal = indicatorSpacing)
                         .width(indicatorHeight.dp)
                         .aspectRatio(1f)
-                        .then(
-                            Modifier.offset(y = animatedValue.dp)
-
-                        ),
+                        .then(Modifier.offset(y = animatedValue.dp)),
                     color = color,
                 )
             }
