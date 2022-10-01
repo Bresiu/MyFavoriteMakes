@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Favorite Makes</string>
+    <string name="heart_icon_content_description">heart icon</string>
+    <string name="car_icon_content_description">car icon</string>
+    <string name="favorite_makes_title">My favorite makes</string>
+    <string name="nudge_favorite_first_make">Favorite your first make!</string>
+    <string name="nudge_favorite_more_makes">Favorite more makes!</string>
+</resources>
