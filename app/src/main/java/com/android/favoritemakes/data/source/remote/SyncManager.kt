@@ -1,13 +1,14 @@
 package com.android.favoritemakes.data.source.remote
 
 import android.content.Context
-import androidx.lifecycle.Transformations.distinctUntilChanged
 import androidx.lifecycle.asFlow
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SyncManager @Inject constructor(
