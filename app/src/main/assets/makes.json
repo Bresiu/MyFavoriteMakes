@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Toyota",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Toyota_Motor_North_America_logo_%282019%29.svg",
+    "country_flag": "🇯🇵"
+  },
+  {
+    "id": 2,
+    "name": "Volkswagen Group",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Volkswagen_logo_2019.svg",
+    "country_flag": "🇩🇪"
+  },
+  {
+    "id": 3,
+    "name": "Hyundai",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg",
+    "country_flag": "🇰🇷"
+  },
+  {
+    "id": 4,
+    "name": "General Motors",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/b/b0/General_Motors_%282021%29.svg",
+    "country_flag": "🇺🇸"
+  },
+  {
+    "id": 5,
+    "name": "Ford",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Ford_Motor_Company_Logo.svg",
+    "country_flag": "🇺🇸"
+  },
+  {
+    "id": 6,
+    "name": "Nissan",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Nissan_2020_logo.svg",
+    "country_flag": "🇯🇵"
+  },
+  {
+    "id": 7,
+    "name": "Honda",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/0/09/Honda-logo.svg",
+    "country_flag": "🇯🇵"
+  },
+  {
+    "id": 8,
+    "name": "Fiat",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Fiat_logo.svg",
+    "country_flag": "🇮🇹"
+  },
+  {
+    "id": 9,
+    "name": "Renault",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Renault_2021.svg",
+    "country_flag": "🇫🇷"
+  },
+  {
+    "id": 10,
+    "name": "Groupe PSA",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Groupe_PSA_logo.svg",
+    "country_flag": "🇫🇷"
+  },
+  {
+    "id": 11,
+    "name": "Suzuki",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Suzuki_logo_2.svg",
+    "country_flag": "🇯🇵"
+  },
+  {
+    "id": 12,
+    "name": "SAIC",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/SAIC_Logo_2013-05-10.svg",
+    "country_flag": "🇨🇳"
+  },
+  {
+    "id": 13,
+    "name": "Daimler",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Mercedes-Benz_Group_black.svg",
+    "country_flag": "🇩🇪"
+  },
+  {
+    "id": 14,
+    "name": "BMW",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/7/73/Logo_BMW_Group_2021.svg",
+    "country_flag": "🇩🇪"
+  },
+  {
+    "id": 15,
+    "name": "Geely",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Geely_logo.svg",
+    "country_flag": "🇨🇳"
+  },
+  {
+    "id": 16,
+    "name": "Changan",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/en/3/31/Changan_Automobile_Logo.svg",
+    "country_flag": "🇨🇳"
+  },
+  {
+    "id": 17,
+    "name": "Mazda",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Mazda_logo.svg",
+    "country_flag": "🇯🇵"
+  },
+  {
+    "id": 18,
+    "name": "Dongfeng Motor",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/en/e/ee/Dengfeng_Motor_Corporation_logo.svg",
+    "country_flag": "🇨🇳"
+  },
+  {
+    "id": 19,
+    "name": "BAIC",
+    "logo_url": "https://files.brandlogos.net/svg/2evITPu2ob/baic-group-logo-brandlogos.net_gzizuqjvf.svg",
+    "country_flag": "🇨🇳"
+  },
+  {
+    "id": 20,
+    "name": "Mitsubishi",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Mitsubishi_logo.svg",
+    "country_flag": "🇯🇵"
+  }
+]
