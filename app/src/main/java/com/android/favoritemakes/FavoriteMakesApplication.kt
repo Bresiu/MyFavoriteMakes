@@ -6,7 +6,6 @@ import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
-
 @HiltAndroidApp
 class FavoriteMakesApplication : Application(), Configuration.Provider {
     @Inject

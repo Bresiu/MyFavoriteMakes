@@ -5,6 +5,7 @@
     <string name="favorite_makes_title">My favorite makes</string>
     <string name="nudge_favorite_first_make">Favorite your first make!</string>
     <string name="nudge_favorite_more_makes">Favorite more makes!</string>
-    <string name="sync_status_syncing">Syncing...</string>
+    <string name="sync_status_syncing">Syncing…</string>
     <string name="sync_status_error">Sync failed. Try again latter.</string>
+    <string name="make_logo_content_description">make logo</string>
 </resources>

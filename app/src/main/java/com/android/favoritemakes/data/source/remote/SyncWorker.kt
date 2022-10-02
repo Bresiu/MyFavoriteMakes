@@ -3,10 +3,11 @@ package com.android.favoritemakes.data.source.remote
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.work.*
-import com.android.favoritemakes.data.mappers.mapToModels
-import com.android.favoritemakes.data.source.local.db.room.MakeDao
-import com.android.favoritemakes.data.source.local.db.room.model.Make
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.android.favoritemakes.data.mappers.mapToDBModels
+import com.android.favoritemakes.data.source.local.db.MakeRepository
+import com.android.favoritemakes.data.source.local.db.room.model.MakeModel
 import com.android.favoritemakes.data.source.remote.model.MakeJson
 import com.android.favoritemakes.utilities.MAKES_DATA_FILENAME
 import com.squareup.moshi.Moshi
@@ -24,7 +25,7 @@ import okio.source
 class SyncWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
-    private val makeDao: MakeDao,
+    private val makeRepository: MakeRepository,
     private val moshi: Moshi,
 ) : CoroutineWorker(context, workerParams) {
     private inline fun <reified T> Moshi.parseList(source: BufferedSource): List<T>? {
@@ -42,15 +43,15 @@ class SyncWorker @AssistedInject constructor(
 
     private fun BufferedSource.parseResults() = moshi.parseList<MakeJson>(this)
 
-    private fun List<Make>.saveLocally() {
-        makeDao.insertAll(this)
+    private suspend fun List<MakeModel>.saveLocally() {
+        makeRepository.insertAll(this)
     }
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
             fetchTopMakes().use { inputStream ->
                 inputStream.parseResults()?.let { jsonObjects ->
-                    jsonObjects.mapToModels().saveLocally()
+                    jsonObjects.mapToDBModels().saveLocally()
                     simulateNetworkDelay()
                     Result.success()
                 } ?: run {

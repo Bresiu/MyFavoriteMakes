@@ -20,7 +20,7 @@ class FavoriteMakesViewModel @Inject constructor(
     private val syncManager: SyncManager,
     private val makeDao: MakeDao,
 ) : ViewModel() {
-    var beforeInitialSync: Boolean by SharedPreferencesBooleanDelegate(sharedPreferences, true)
+    private var beforeInitialSync: Boolean by SharedPreferencesBooleanDelegate(sharedPreferences, true)
     private val _favoriteMakesCount = mutableStateOf(0)
     val favoriteMakes: State<Int>
         get() = _favoriteMakesCount
