@@ -1,6 +1,8 @@
 package com.android.favoritemakes.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
@@ -23,7 +25,7 @@ import com.android.favoritemakes.data.source.remote.SyncStatus
 import com.android.favoritemakes.ui.theme.FavoriteMakesTheme
 import kotlinx.coroutines.delay
 
-private const val NUDGE_DELAY = 300L
+private const val BUTTON_DISPLAY_DELAY = 300L
 
 @Composable
 fun FavoriteMakesScreen(
@@ -31,23 +33,23 @@ fun FavoriteMakesScreen(
     viewModel: FavoriteMakesViewModel = viewModel(),
     navigateToMakesList: () -> Unit
 ) {
-    var isNudgeVisible by rememberSaveable { mutableStateOf(false) }
-    val favoriteMakesCount by remember { viewModel.favoriteMakes }
+    val favoriteMakesCount by viewModel.favoriteMakes.collectAsState(initial = 0)
+    var isButtonVisible by rememberSaveable { mutableStateOf(false) }
     val syncStatus by remember { viewModel.syncStatus }
-    LaunchedEffect(isNudgeVisible) {
-        delay(NUDGE_DELAY)
-        isNudgeVisible = true
+    LaunchedEffect(isButtonVisible) {
+        delay(BUTTON_DISPLAY_DELAY)
+        isButtonVisible = true
     }
     Surface(modifier = modifier.fillMaxSize()) {
         FavoriteMakesContent(
             favoriteMakesCount = favoriteMakesCount.toString(),
-            nudgeState = NudgeState(
-                isVisible = isNudgeVisible,
+            buttonState = ButtonState(
+                isVisible = isButtonVisible,
                 text = stringResource(
                     if (favoriteMakesCount == 0) {
-                        R.string.nudge_favorite_first_make
+                        R.string.label_favorite_first_make
                     } else {
-                        R.string.nudge_favorite_more_makes
+                        R.string.label_favorite_more_makes
                     }
                 ),
                 onClick = navigateToMakesList,
@@ -73,17 +75,18 @@ fun FavoriteMakesScreen(
 @Composable
 fun FavoriteMakesContent(
     favoriteMakesCount: String,
-    nudgeState: NudgeState,
+    buttonState: ButtonState,
     syncState: SyncState,
 ) {
     Box(contentAlignment = Alignment.TopCenter) {
         Column(
-            modifier = Modifier.padding(vertical = 32.dp),
+            modifier = Modifier
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                modifier = Modifier.padding(vertical = 2.dp),
+                modifier = Modifier.padding(top = 32.dp),
                 textAlign = TextAlign.Center,
                 text = stringResource(R.string.favorite_makes_title),
                 style = typography.titleLarge,
@@ -105,7 +108,7 @@ fun FavoriteMakesContent(
                     color = Color.White,
                 )
             }
-            AnimatedNudge(nudgeState = nudgeState)
+            AnimatedButton(buttonState = buttonState)
         }
         AnimatedSyncStatus(syncState = syncState)
     }
@@ -117,9 +120,9 @@ fun FavoriteMakesPreview() {
     FavoriteMakesTheme {
         FavoriteMakesContent(
             favoriteMakesCount = "3",
-            nudgeState = NudgeState(
+            buttonState = ButtonState(
                 isVisible = true,
-                text = stringResource(id = R.string.nudge_favorite_first_make),
+                text = stringResource(id = R.string.label_favorite_first_make),
                 onClick = {}
             ),
             syncState = SyncState(

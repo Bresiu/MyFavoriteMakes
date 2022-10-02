@@ -8,6 +8,6 @@ interface MakeRepository {
     fun getAll(): Flow<List<MakeModel>>
     fun getFavoritesCount(): Flow<Int>
     suspend fun updateMakes(makes: List<MakeModel>)
-    suspend fun favoriteMake(makeId: String)
-    suspend fun unfavoriteMake(makeId: String)
+    suspend fun favoriteMake(makeId: Long)
+    suspend fun unfavoriteMake(makeId: Long)
 }

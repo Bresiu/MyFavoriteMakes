@@ -5,12 +5,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.favoritemakes.data.source.local.db.room.MakeDao
+import com.android.favoritemakes.data.source.local.db.MakeRepository
 import com.android.favoritemakes.data.source.remote.SyncManager
 import com.android.favoritemakes.data.source.remote.SyncStatus
 import com.android.favoritemakes.utilities.extension.SharedPreferencesBooleanDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,32 +20,24 @@ import javax.inject.Inject
 class FavoriteMakesViewModel @Inject constructor(
     sharedPreferences: SharedPreferences,
     private val syncManager: SyncManager,
-    private val makeDao: MakeDao,
+    makeRepository: MakeRepository,
 ) : ViewModel() {
-    private var beforeInitialSync: Boolean by SharedPreferencesBooleanDelegate(sharedPreferences, true)
-    private val _favoriteMakesCount = mutableStateOf(0)
-    val favoriteMakes: State<Int>
-        get() = _favoriteMakesCount
+    private var isBeforeInitialSync: Boolean by SharedPreferencesBooleanDelegate(
+        sharedPreferences,
+        true
+    )
+    val favoriteMakes: Flow<Int> = makeRepository.getFavoritesCount()
     private val _syncStatus = mutableStateOf(SyncStatus.IDLE)
     val syncStatus: State<SyncStatus>
         get() = _syncStatus
 
     init {
-        fetchFavoritesCount()
         startInitialSyncIfNeeded()
     }
 
-    private fun fetchFavoritesCount() {
-        viewModelScope.launch {
-            makeDao.getFavoritesCount().collect {
-                _favoriteMakesCount.value = it
-            }
-        }
-    }
-
     private fun startInitialSyncIfNeeded() {
-        if (beforeInitialSync) {
-            viewModelScope.launch {
+        if (isBeforeInitialSync) {
+            viewModelScope.launch(Dispatchers.IO) {
                 syncManager.startSync().collect {
                     _syncStatus.value = it
                     if (it == SyncStatus.FAILED) {
@@ -51,7 +45,7 @@ class FavoriteMakesViewModel @Inject constructor(
                         _syncStatus.value = SyncStatus.IDLE
                     }
                     if (it == SyncStatus.SUCCEEDED) {
-                        beforeInitialSync = false
+                        isBeforeInitialSync = false
                     }
                 }
             }

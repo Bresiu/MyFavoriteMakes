@@ -3,9 +3,12 @@
     <string name="heart_icon_content_description">heart icon</string>
     <string name="car_icon_content_description">car icon</string>
     <string name="favorite_makes_title">My favorite makes</string>
-    <string name="nudge_favorite_first_make">Favorite your first make!</string>
-    <string name="nudge_favorite_more_makes">Favorite more makes!</string>
+    <string name="label_favorite_first_make">Favorite your first make!</string>
+    <string name="label_favorite_more_makes">Favorite more makes!</string>
     <string name="sync_status_syncing">Syncing…</string>
     <string name="sync_status_error">Sync failed. Try again latter.</string>
     <string name="make_logo_content_description">make logo</string>
+    <string name="unfavorite_make_content_description">unfavorite make icon</string>
+    <string name="favorite_make_content_description">favorite make icon</string>
+    <string name="no_items_empty_state">No items</string>
 </resources>

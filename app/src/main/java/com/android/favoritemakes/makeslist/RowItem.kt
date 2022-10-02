@@ -1,9 +1,6 @@
 package com.android.favoritemakes.makeslist
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,8 +23,9 @@ private const val CAR_LOGO_SIZE = 60
 @Composable
 fun RowItem(
     modifier: Modifier = Modifier,
-    make: MakeState,
+    make: MakeData,
     imageLoader: ImageLoader = LocalContext.current.imageLoader,
+    onFavoriteIconClick: () -> Unit,
 ) {
     Row(
         modifier = modifier.padding(vertical = 8.dp, horizontal = 12.dp),
@@ -42,24 +40,30 @@ fun RowItem(
             imageLoader = imageLoader,
             error = painterResource(R.drawable.ic_car),
         )
-        Column(
-            Modifier.padding(start = 16.dp)
-        ) {
+        Row {
             Text(
+                modifier = Modifier.padding(start = 18.dp, end = 4.dp),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 text = make.name
             )
             Text(
+                modifier = Modifier.align(alignment = Alignment.Top),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 text = make.countryFlag,
             )
         }
+        Spacer(Modifier.weight(1f))
+        FavoriteIcon(
+            modifier = Modifier,
+            isFavorite = make.isFavorite,
+            onClick = onFavoriteIconClick,
+        )
     }
 }
 
-data class MakeState(
+data class MakeData(
     val id: Long,
     val name: String,
     val logoUrl: String,
@@ -72,13 +76,14 @@ data class MakeState(
 fun RowItemPreview() {
     FavoriteMakesTheme {
         RowItem(
-            make = MakeState(
+            make = MakeData(
                 id = 0,
                 name = "Toyota",
                 logoUrl = "",
                 countryFlag = "🇯🇵",
                 isFavorite = true,
-            )
+            ),
+            onFavoriteIconClick = {},
         )
     }
 }

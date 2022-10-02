@@ -118,5 +118,17 @@
     "name": "Mitsubishi",
     "logo_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Mitsubishi_logo.svg",
     "country_flag": "🇯🇵"
+  },
+  {
+    "id": 21,
+    "name": "Audi",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg",
+    "country_flag": "🇩🇪"
+  },
+  {
+    "id": 22,
+    "name": "Tesla",
+    "logo_url": "https://uload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
+    "country_flag": "🇺🇸"
   }
 ]
