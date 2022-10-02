@@ -1,26 +1,32 @@
 package com.android.favoritemakes.data.source.local.db.room
 
 import androidx.room.*
-import com.android.favoritemakes.data.source.local.db.room.model.Make
+import com.android.favoritemakes.data.source.local.db.room.model.MakeModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MakeDao {
     @Query("SELECT * FROM makes")
-    fun getAll(): Flow<List<Make>>
+    fun getAll(): Flow<List<MakeModel>>
 
     @Query("SELECT COUNT(*) FROM makes WHERE is_favorite = 1")
     fun getFavoritesCount(): Flow<Int>
 
     @Transaction
-    fun updateMakes(makes: List<Make>) {
+    suspend fun updateMakes(makes: List<MakeModel>) {
         deleteAllMakes()
         insertAll(makes)
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(makes: List<Make>)
+    suspend fun insertAll(makes: List<MakeModel>)
 
     @Query("DELETE FROM Makes")
-    fun deleteAllMakes()
+    suspend fun deleteAllMakes()
+
+    @Query("UPDATE makes SET is_favorite = 1 WHERE id = :makeId")
+    fun favoriteMake(makeId: String)
+
+    @Query("UPDATE makes SET is_favorite = 0 WHERE id = :makeId")
+    fun unfavoriteMake(makeId: String)
 }

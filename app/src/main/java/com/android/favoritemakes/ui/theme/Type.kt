@@ -15,12 +15,10 @@ private val RobotoCondensed = FontFamily(
 )
 
 val Typography = Typography(
-    bodyLarge = TextStyle(
+    displayLarge = TextStyle(
         fontFamily = RobotoCondensed,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontWeight = FontWeight.Light,
+        fontSize = 120.sp,
     ),
     titleLarge = TextStyle(
         fontFamily = RobotoCondensed,

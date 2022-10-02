@@ -3,8 +3,10 @@ package com.android.favoritemakes.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.android.favoritemakes.data.source.local.db.MakeRepository
 import com.android.favoritemakes.data.source.local.db.room.AppDatabase
 import com.android.favoritemakes.data.source.local.db.room.MakeDao
+import com.android.favoritemakes.data.source.local.db.room.MakeRoomRepository
 import com.android.favoritemakes.utilities.DATABASE_NAME
 import com.android.favoritemakes.utilities.SHARED_PREFS_NAME
 import dagger.Module
@@ -22,6 +24,10 @@ object DatabaseModule {
 
     @Provides
     fun providesMakeDao(appDatabase: AppDatabase): MakeDao = appDatabase.makeDao()
+
+    @Provides
+    internal fun provideMakeRepository(makeDao: MakeDao): MakeRepository =
+        MakeRoomRepository(makeDao)
 
     @Provides
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
