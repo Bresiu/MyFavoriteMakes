@@ -20,11 +20,11 @@ import com.android.favoritemakes.ui.theme.FavoriteMakesTheme
 private const val ANIMATION_DELAY = 300
 
 @Composable
-fun AnimatedNudge(
-    nudgeState: NudgeState,
+fun AnimatedButton(
+    buttonState: ButtonState,
 ) {
     AnimatedVisibility(
-        visible = nudgeState.isVisible,
+        visible = buttonState.isVisible,
         enter = slideInHorizontally(
             animationSpec = tween(durationMillis = ANIMATION_DELAY)
         ) { fullWidth -> -fullWidth / 3 } + fadeIn(
@@ -33,7 +33,7 @@ fun AnimatedNudge(
     ) {
         Button(
             modifier = Modifier.padding(20.dp),
-            onClick = nudgeState.onClick,
+            onClick = buttonState.onClick,
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 10.dp,
                 pressedElevation = 15.dp,
@@ -46,7 +46,7 @@ fun AnimatedNudge(
             )
             Text(
                 modifier = Modifier.padding(10.dp),
-                text = nudgeState.text,
+                text = buttonState.text,
                 style = MaterialTheme.typography.labelMedium,
             )
         }
@@ -55,19 +55,19 @@ fun AnimatedNudge(
 
 @Preview
 @Composable
-fun AnimatedNudgePreview() {
+fun AnimatedButtonPreview() {
     FavoriteMakesTheme {
-        AnimatedNudge(
-            nudgeState = NudgeState(
+        AnimatedButton(
+            buttonState = ButtonState(
                 isVisible = true,
-                text = stringResource(id = R.string.nudge_favorite_first_make),
+                text = stringResource(id = R.string.label_favorite_first_make),
                 onClick = {}
             ),
         )
     }
 }
 
-data class NudgeState(
+data class ButtonState(
     val isVisible: Boolean,
     val text: String,
     val onClick: () -> Unit,

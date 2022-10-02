@@ -25,8 +25,8 @@ interface MakeDao {
     suspend fun deleteAllMakes()
 
     @Query("UPDATE makes SET is_favorite = 1 WHERE id = :makeId")
-    fun favoriteMake(makeId: String)
+    fun favoriteMake(makeId: Long)
 
     @Query("UPDATE makes SET is_favorite = 0 WHERE id = :makeId")
-    fun unfavoriteMake(makeId: String)
+    fun unfavoriteMake(makeId: Long)
 }

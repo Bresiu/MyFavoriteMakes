@@ -19,11 +19,11 @@ class MakeRoomRepository(
         makeDao.updateMakes(makes)
     }
 
-    override suspend fun favoriteMake(makeId: String) {
+    override suspend fun favoriteMake(makeId: Long) {
         makeDao.favoriteMake(makeId)
     }
 
-    override suspend fun unfavoriteMake(makeId: String) {
+    override suspend fun unfavoriteMake(makeId: Long) {
         makeDao.unfavoriteMake(makeId)
     }
 }
