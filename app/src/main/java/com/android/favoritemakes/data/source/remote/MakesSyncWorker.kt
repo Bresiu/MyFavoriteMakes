@@ -8,9 +8,10 @@ import androidx.work.WorkerParameters
 import com.android.favoritemakes.data.mappers.mapToDBModels
 import com.android.favoritemakes.data.source.local.db.MakeRepository
 import com.android.favoritemakes.data.source.local.db.room.model.MakeModel
+import com.android.favoritemakes.di.IoDispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 @HiltWorker
@@ -19,13 +20,14 @@ class MakesSyncWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val makeRepository: MakeRepository,
     private val syncRepository: SyncRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : CoroutineWorker(context, workerParams) {
 
     private suspend fun List<MakeModel>.saveLocally() {
         makeRepository.insertAll(this)
     }
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+    override suspend fun doWork(): Result = withContext(ioDispatcher) {
         try {
             when (val apiSyncResult = syncRepository.getVehicleMakes()) {
                 is com.android.favoritemakes.utilities.result.Result.Failure -> {
