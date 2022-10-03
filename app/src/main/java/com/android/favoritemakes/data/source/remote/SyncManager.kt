@@ -15,7 +15,7 @@ class SyncManager @Inject constructor(
     @ApplicationContext val context: Context,
 ) {
     fun startSync(): Flow<SyncStatus> {
-        val request = OneTimeWorkRequestBuilder<SyncWorker>().build()
+        val request = OneTimeWorkRequestBuilder<MakesSyncWorker>().build()
         with(WorkManager.getInstance(context)) {
             enqueue(request)
             return getWorkInfoByIdLiveData(request.id).asFlow().map {
