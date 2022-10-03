@@ -1,17 +1,50 @@
 buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
     ext {
         compose_version = '1.2.1'
         room_version = '2.4.3'
         lifecycleVersion = '2.5.1'
     }
     dependencies {
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.43")
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.43'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'com.android.application' version '7.2.2' apply false
     id 'com.android.library' version '7.2.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+    id "org.sonarqube" version "3.4.0.2513"
+}
+sonarqube {
+    properties {
+        property "sonar.projectName", "FavoriteMakes"
+        property "sonar.projectKey", "FavoriteMakes"
+        property "sonar.sources", ["src/test", "src/main/java"]
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.java.source", "1.11"
+        property "sonar.java.target", "1.11"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.java.binaries", "build/intermediates/classes/debug"
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+        property "sonar.test.inclusions", "**/*Test*/**"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property 'sonar.coverage.jacoco.xmlReportPaths', "$projectDir/app/build/jacoco/jacoco.xml"
+        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest"
+        property "sonar.exclusions", '**/.gradle/**,' +
+                "**/androidTest/**," +
+                "**/R.class," +
+                "**/BuildConfig.*," +
+                "**/Manifest*.*," +
+                "**/android/databinding/*," +
+                "**/androidx/databinding/*," +
+                "**/*MapperImpl*.*," +
+                "**/BuildConfig.*," +
+                "**/Manifest*.*," +
+                "**/google-services.json"
+    }
 }
 
 task clean(type: Delete) {
