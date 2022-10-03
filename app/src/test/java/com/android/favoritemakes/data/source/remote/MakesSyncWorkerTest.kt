@@ -5,8 +5,8 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import com.android.favoritemakes.coCalledOnce
 import com.android.favoritemakes.coWasNotCalled
+import com.android.favoritemakes.data.provideTestMakeJsonList
 import com.android.favoritemakes.data.source.local.db.MakeRepository
-import com.android.favoritemakes.data.source.remote.model.MakeJson
 import com.android.favoritemakes.mockkLogger
 import com.android.favoritemakes.utilities.result.Result
 import io.mockk.*
@@ -40,7 +40,7 @@ internal class MakesSyncWorkerTest {
             coEvery { insertAll(any()) } just Runs
         }
         val syncRepository: SyncRepository = mockk {
-            coEvery { getVehicleMakes() } returns Result.Success(provideTestMakes())
+            coEvery { getVehicleMakes() } returns Result.Success(provideTestMakeJsonList())
         }
         val makesSyncWorker = MakesSyncWorker(
             context,
@@ -82,7 +82,7 @@ internal class MakesSyncWorkerTest {
             coEvery { insertAll(any()) } throws IllegalAccessException()
         }
         val syncRepository: SyncRepository = mockk {
-            coEvery { getVehicleMakes() } returns Result.Success(provideTestMakes())
+            coEvery { getVehicleMakes() } returns Result.Success(provideTestMakeJsonList())
         }
         val makesSyncWorker = MakesSyncWorker(
             context,
@@ -97,9 +97,4 @@ internal class MakesSyncWorkerTest {
         confirmVerified(makeRepository, syncRepository)
         Assertions.assertThat(result).isInstanceOf(ListenableWorker.Result.Failure::class.java)
     }
-
-    private fun provideTestMakes() = listOf(
-        MakeJson(0, "Tesla", "tesla_url", "🇺🇸"),
-        MakeJson(1, "Audi", "audi_url", "🇩🇪")
-    )
 }
