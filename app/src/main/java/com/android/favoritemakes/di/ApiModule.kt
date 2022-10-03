@@ -1,11 +1,15 @@
 package com.android.favoritemakes.di
 
+import android.content.Context
+import com.android.favoritemakes.data.source.remote.assets.AssetsSyncRepository
+import com.android.favoritemakes.data.source.remote.SyncRepository
 import com.android.favoritemakes.data.source.remote.SyncService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -39,4 +43,10 @@ object ApiModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient)
             .build()
+
+    @Provides
+    fun providesSyncRepository(
+        @ApplicationContext context: Context,
+        moshi: Moshi,
+    ): SyncRepository = AssetsSyncRepository(context, moshi)
 }
