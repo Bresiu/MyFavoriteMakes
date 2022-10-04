@@ -43,7 +43,15 @@ sonarqube {
                 "**/*MapperImpl*.*," +
                 "**/BuildConfig.*," +
                 "**/Manifest*.*," +
-                "**/google-services.json"
+                "**/google-services.json," +
+                '**/*Application.*,' +
+                '**/*Activity.*,' +
+                '**/*Theme.kt,' +
+                '**/*Type.kt,' +
+                '**/*Module.*,' +
+                '**/*Dao.*,' +
+                '**/*Database.*,' +
+                '**/*Screen.*,'
     }
 }
 
