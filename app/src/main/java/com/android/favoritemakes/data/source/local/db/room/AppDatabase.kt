@@ -6,5 +6,5 @@ import com.android.favoritemakes.data.source.local.db.room.model.MakeModel
 
 @Database(entities = [MakeModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun makeDao(): MakeDao
+    abstract fun makesDao(): MakesDao
 }

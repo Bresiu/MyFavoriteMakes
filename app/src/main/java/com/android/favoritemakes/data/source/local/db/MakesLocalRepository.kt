@@ -3,7 +3,7 @@ package com.android.favoritemakes.data.source.local.db
 import com.android.favoritemakes.data.source.local.db.room.model.MakeModel
 import kotlinx.coroutines.flow.Flow
 
-interface MakeRepository {
+interface MakesLocalRepository {
     suspend fun insertAll(list: List<MakeModel>)
     fun getAll(): Flow<List<MakeModel>>
     fun getFavoritesCount(): Flow<Int>

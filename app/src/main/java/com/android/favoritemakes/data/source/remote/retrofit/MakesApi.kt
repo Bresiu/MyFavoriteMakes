@@ -1,13 +1,12 @@
-package com.android.favoritemakes.data.source.remote
+package com.android.favoritemakes.data.source.remote.retrofit
 
 import com.android.favoritemakes.data.source.remote.model.MakeJson
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface SyncService {
+interface MakesApi {
     @GET("TODO/provide/real/endpoint/{listSize}")
-    fun getVehicleMakes(
+    suspend fun getVehicleMakes(
         @Path("listSize") listSize: Int = 100,
-    ): Flow<List<MakeJson>>
+    ): List<MakeJson>
 }

@@ -1,9 +1,10 @@
 package com.android.favoritemakes.di
 
 import android.content.Context
-import com.android.favoritemakes.data.source.remote.assets.AssetsSyncRepository
-import com.android.favoritemakes.data.source.remote.SyncRepository
-import com.android.favoritemakes.data.source.remote.SyncService
+import com.android.favoritemakes.data.source.remote.MakesApiRemoteRepository
+import com.android.favoritemakes.data.source.remote.retrofit.MakesApi
+import com.android.favoritemakes.data.source.remote.MakesRemoteRepository
+import com.android.favoritemakes.data.source.remote.assets.AssetsMakesApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -15,6 +16,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
+import javax.inject.Qualifier
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,9 +25,22 @@ object ApiModule {
     @Named("baseURL")
     fun providesAPIUrl() = "https://TODO-provide_real_url_to_fetch_makes_list"
 
+    @Remote
     @Provides
-    fun providesSyncService(retrofit: Retrofit): SyncService =
-        retrofit.create(SyncService::class.java)
+    fun providesRemoteMakesApi(retrofit: Retrofit): MakesApi =
+        retrofit.create(MakesApi::class.java)
+
+    @Assets
+    @Provides
+    fun providesAssetsMakesApi(
+        @ApplicationContext context: Context,
+        moshi: Moshi,
+    ): MakesApi = AssetsMakesApi(context, moshi)
+
+    @Provides
+    fun providesAssetsMakesRepository(
+        @Assets makesApi: MakesApi,
+    ): MakesRemoteRepository = MakesApiRemoteRepository(makesApi)
 
     @Provides
     fun providesMoshi(): Moshi = Moshi.Builder()
@@ -44,9 +59,9 @@ object ApiModule {
             .client(okHttpClient)
             .build()
 
-    @Provides
-    fun providesSyncRepository(
-        @ApplicationContext context: Context,
-        moshi: Moshi,
-    ): SyncRepository = AssetsSyncRepository(context, moshi)
+    @Qualifier
+    annotation class Assets
+
+    @Qualifier
+    annotation class Remote
 }

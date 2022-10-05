@@ -5,7 +5,7 @@ import com.android.favoritemakes.data.source.local.db.room.model.MakeModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MakeDao {
+interface MakesDao {
     @Query("SELECT * FROM makes")
     fun getAll(): Flow<List<MakeModel>>
 

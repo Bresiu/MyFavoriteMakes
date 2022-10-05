@@ -1,16 +1,10 @@
-package com.android.favoritemakes
+package com.android.favoritemakes.utils
 
 import android.util.Log
 import io.mockk.*
 
-internal fun calledOnce(verifyBlock: MockKVerificationScope.() -> Unit) =
-    verify(exactly = 1, verifyBlock = verifyBlock)
-
 internal fun coCalledOnce(verifyBlock: suspend MockKVerificationScope.() -> Unit) =
     coVerify(exactly = 1, verifyBlock = verifyBlock)
-
-internal fun wasNotCalled(verifyBlock: MockKVerificationScope.() -> Unit) =
-    verify(exactly = 0, verifyBlock = verifyBlock)
 
 internal fun coWasNotCalled(verifyBlock: suspend MockKVerificationScope.() -> Unit) =
     coVerify(inverse = true, verifyBlock = verifyBlock)

@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.favoritemakes.data.source.local.db.MakeRepository
+import com.android.favoritemakes.data.source.local.db.MakesLocalRepository
 import com.android.favoritemakes.data.source.remote.SyncManager
 import com.android.favoritemakes.data.source.remote.SyncStatus
 import com.android.favoritemakes.di.IoDispatcher
@@ -21,14 +21,14 @@ import javax.inject.Inject
 class FavoriteMakesViewModel @Inject constructor(
     sharedPreferences: SharedPreferences,
     private val syncManager: SyncManager,
-    makeRepository: MakeRepository,
+    makesLocalRepository: MakesLocalRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private var isBeforeInitialSync: Boolean by SharedPreferencesBooleanDelegate(
         sharedPreferences,
         true
     )
-    val favoriteMakes: Flow<Int> = makeRepository.getFavoritesCount()
+    val favoriteMakes: Flow<Int> = makesLocalRepository.getFavoritesCount()
     private val _syncStatus = mutableStateOf(SyncStatus.IDLE)
     val syncStatus: State<SyncStatus>
         get() = _syncStatus

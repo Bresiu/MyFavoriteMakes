@@ -2,9 +2,9 @@ package com.android.favoritemakes.home
 
 import android.content.SharedPreferences
 import app.cash.turbine.test
-import com.android.favoritemakes.coCalledOnce
-import com.android.favoritemakes.coWasNotCalled
-import com.android.favoritemakes.data.source.local.db.MakeRepository
+import com.android.favoritemakes.utils.coCalledOnce
+import com.android.favoritemakes.utils.coWasNotCalled
+import com.android.favoritemakes.data.source.local.db.MakesLocalRepository
 import com.android.favoritemakes.data.source.remote.SyncManager
 import com.android.favoritemakes.data.source.remote.SyncStatus
 import io.mockk.*
@@ -13,7 +13,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -25,11 +24,11 @@ internal class FavoriteMakesViewModelTest {
             every { getBoolean("isBeforeInitialSync", true) } returns false
         }
         val syncManager: SyncManager = mockk()
-        val makeRepository: MakeRepository = mockk {
+        val makesLocalRepository: MakesLocalRepository = mockk {
             every { getFavoritesCount() } returns flowOf(0, 1, 2, 3)
         }
         val favoriteMakesViewModel = FavoriteMakesViewModel(
-            sharedPreferences, syncManager, makeRepository, UnconfinedTestDispatcher(testScheduler)
+            sharedPreferences, syncManager, makesLocalRepository, UnconfinedTestDispatcher(testScheduler)
         )
         favoriteMakesViewModel.favoriteMakes.test {
             assertThat(awaitItem()).isEqualTo(0)
@@ -46,11 +45,11 @@ internal class FavoriteMakesViewModelTest {
             every { getBoolean("isBeforeInitialSync", true) } returns false
         }
         val syncManager: SyncManager = mockk()
-        val makeRepository: MakeRepository = mockk {
+        val makesLocalRepository: MakesLocalRepository = mockk {
             every { getFavoritesCount() } returns flowOf(0)
         }
         val favoriteMakesViewModel = FavoriteMakesViewModel(
-            sharedPreferences, syncManager, makeRepository, UnconfinedTestDispatcher(testScheduler)
+            sharedPreferences, syncManager, makesLocalRepository, UnconfinedTestDispatcher(testScheduler)
         )
         coWasNotCalled { syncManager.startSync() }
         confirmVerified(syncManager)
@@ -70,11 +69,11 @@ internal class FavoriteMakesViewModelTest {
         val syncManager: SyncManager = mockk {
             every { startSync() } returns flowOf(SyncStatus.SUCCEEDED)
         }
-        val makeRepository: MakeRepository = mockk {
+        val makesLocalRepository: MakesLocalRepository = mockk {
             every { getFavoritesCount() } returns flowOf(0)
         }
         val favoriteMakesViewModel = FavoriteMakesViewModel(
-            sharedPreferences, syncManager, makeRepository, UnconfinedTestDispatcher(testScheduler)
+            sharedPreferences, syncManager, makesLocalRepository, UnconfinedTestDispatcher(testScheduler)
         )
         assertThat(favoriteMakesViewModel.syncStatus.value)
             .isEqualTo(SyncStatus.SUCCEEDED)
@@ -94,11 +93,11 @@ internal class FavoriteMakesViewModelTest {
         val syncManager: SyncManager = mockk {
             every { startSync() } returns flowOf(SyncStatus.FAILED)
         }
-        val makeRepository: MakeRepository = mockk {
+        val makesLocalRepository: MakesLocalRepository = mockk {
             every { getFavoritesCount() } returns flowOf(0)
         }
         val favoriteMakesViewModel = FavoriteMakesViewModel(
-            sharedPreferences, syncManager, makeRepository, UnconfinedTestDispatcher(testScheduler)
+            sharedPreferences, syncManager, makesLocalRepository, UnconfinedTestDispatcher(testScheduler)
         )
         assertThat(favoriteMakesViewModel.syncStatus.value)
             .isEqualTo(SyncStatus.FAILED)

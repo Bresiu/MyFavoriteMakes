@@ -6,9 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,7 +24,14 @@ fun MakesListScreen(
     viewModel: MakesListViewModel = viewModel(),
 ) {
     val makes: List<MakeData> by viewModel.fetchMakes().collectAsState(initial = emptyList())
-    MakesList(makes = makes, viewModel.imageLoader) { makeId, isFavorite ->
+    val shouldShowEmptyState by remember {
+        derivedStateOf { makes.isEmpty() }
+    }
+    MakesList(
+        makes = makes,
+        shouldShowEmptyState = shouldShowEmptyState,
+        viewModel.imageLoader
+    ) { makeId, isFavorite ->
         viewModel.toggleFavoriteMake(makeId, isFavorite)
     }
 }
@@ -34,10 +39,11 @@ fun MakesListScreen(
 @Composable
 fun MakesList(
     makes: List<MakeData>,
+    shouldShowEmptyState: Boolean,
     imageLoader: ImageLoader,
     onFavoriteIconToggle: (Long, Boolean) -> Unit,
 ) {
-    if (makes.isEmpty()) {
+    if (shouldShowEmptyState) {
         EmptyState()
     }
     LazyColumn(
@@ -107,6 +113,7 @@ fun MakesListPreview() {
                     isFavorite = false,
                 )
             ),
+            shouldShowEmptyState = false,
             imageLoader = LocalContext.current.imageLoader,
             onFavoriteIconToggle = { _, _ -> }
         )
