@@ -4,11 +4,7 @@ My favorite makes
 As a user, I want to see a list of vehicle makes so that I can choose which ones are my favorites.
 
 ### Design
-<p float="middle">
 <img width="300" alt="favorite_makes_gif" src="https://user-images.githubusercontent.com/1716445/194426085-4760efdf-4042-47a9-87b5-6c762489329b.gif">
-<img width="300" alt="favorite_makes_home" src="https://user-images.githubusercontent.com/1716445/194069687-666a1f20-b51d-498d-be67-b8f2cf85309e.png">
-<img width="300" alt="favorite_makes_list" src="https://user-images.githubusercontent.com/1716445/194067521-7f5f18de-6f42-470d-92f5-3b308c0bccaf.png">
-</p>
 
 ### Acceptance criteria:
 - App opens on a main screen
@@ -44,3 +40,8 @@ running. In the future they will have to be persisted.
 ### List Performance
 `LazyColumn` perfomance is not great on debug builds. I applied some Android best practices: https://stackoverflow.com/a/70596559/1888738
 Fix for this issue is to generate release build. In the future **Baseline Profiles** can be introduced https://developer.android.com/topic/performance/baselineprofiles/overview
+
+<p float="middle">
+<img width="300" alt="favorite_makes_home" src="https://user-images.githubusercontent.com/1716445/194069687-666a1f20-b51d-498d-be67-b8f2cf85309e.png">
+<img width="300" alt="favorite_makes_list" src="https://user-images.githubusercontent.com/1716445/194067521-7f5f18de-6f42-470d-92f5-3b308c0bccaf.png">
+</p>
